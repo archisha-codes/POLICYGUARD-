@@ -10,7 +10,6 @@ export default function RiskMeter({ risk }) {
     <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center
       hover:shadow-2xl transition">
       <p className="text-gray-500 mb-4">Overall Risk Score</p>
-      
 
       <div
         className={`w-32 h-32 rounded-full flex items-center justify-center

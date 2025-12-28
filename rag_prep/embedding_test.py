@@ -2,7 +2,6 @@
 """
 Embedding generation test using Sentence-Transformers
 Phase-1 validation
-Owner: Archisha
 """
 
 from sentence_transformers import SentenceTransformer

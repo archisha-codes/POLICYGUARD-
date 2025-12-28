@@ -1,0 +1,67 @@
+[
+  {
+    "compliance_status": "NON_COMPLIANT",
+    "risk_score": 35,
+    "confidence_score": 64,
+    "policy_coverage_percentage": 50,
+    "justification": "Relevant RBI regulation retrieved via semantic search.",
+    "evidence": "Banks/FIs should frame their KYC policies incorporating the following four key elements: (i) Customer Acceptance Policy (CAP); (ii) Customer Identification Procedures (CIP); (iii) Monitoring of Transactions; and (iv) Risk Management. 3.1. Customer Acceptance Policy (CAP) Banks/FIs should develop cle",
+    "metadata": {
+      "document": "Know Your Customer (KYC) norms-Anti-Money Laundering (AML) standards.pdf",
+      "section": "3. KYC Policy",
+      "similarity_score": 0.641
+    }
+  },
+  {
+    "compliance_status": "NON_COMPLIANT",
+    "risk_score": 38,
+    "confidence_score": 61,
+    "policy_coverage_percentage": 50,
+    "justification": "Relevant RBI regulation retrieved via semantic search.",
+    "evidence": "OBLIGATIONS OF BANKING COMPANIES, FINANCIAL INSTITUTIONS AND INTERMEDIARIES 4[11A. Verification of Identity by Reporting Entity.—(1) Every Reporting Entity shall verify the identity of its clients and the beneficial owner, by— (a) authentication under the Aadhaar (Targeted Delivery of Financial and ",
+    "metadata": {
+      "document": "PMLA_Act_2002.pdf",
+      "section": "CHAPTER IV",
+      "similarity_score": 0.614
+    }
+  },
+  {
+    "compliance_status": "NON_COMPLIANT",
+    "risk_score": 41,
+    "confidence_score": 58,
+    "policy_coverage_percentage": 50,
+    "justification": "Relevant RBI regulation retrieved via semantic search.",
+    "evidence": "may contain, REs shall ensure that: (a) No account is opened in anonymous or fictitious/benami name. (b) 38No account is opened where the RE is unable to apply appropriate CDD measures, either due to non-cooperation of the customer or non-reliability of the documents/information furnished by the cus",
+    "metadata": {
+      "document": "Master Direction - Know Your Customer (KYC) Direction, 2016.pdf",
+      "section": "10. Without prejudice to the generality of the aspect that Customer Acceptance Policy",
+      "similarity_score": 0.586
+    }
+  },
+  {
+    "compliance_status": "NON_COMPLIANT",
+    "risk_score": 41,
+    "confidence_score": 58,
+    "policy_coverage_percentage": 50,
+    "justification": "Relevant RBI regulation retrieved via semantic search.",
+    "evidence": "3.2.1 General 3.2.2 Customer Due Diligence Requirements 3.2.2 I.A Accounts of Individuals 3.2.2.I.B Accounts of other than individuals 3.2.2.I.C Beneficial Ownership 3.2.2.II Introduction of new technology – credit/debit/smart/gift card 3.2.2.III Periodic updation of KYC 3.2.2.IV Miscellaneous ",
+    "metadata": {
+      "document": "Know Your Customer (KYC) norms-Anti-Money Laundering (AML) standards.pdf",
+      "section": "3.2 Customer Identification Procedure",
+      "similarity_score": 0.581
+    }
+  },
+  {
+    "compliance_status": "NON_COMPLIANT",
+    "risk_score": 43,
+    "confidence_score": 56,
+    "policy_coverage_percentage": 50,
+    "justification": "Relevant RBI regulation retrieved via semantic search.",
+    "evidence": "For the purpose of KYC Norms, a ‘Customer’ is defined as a person who is engaged in a financial transaction or activity with a reporting entity and includes a person on whose behalf the person who is engaged in the transaction or activity, is acting. ",
+    "metadata": {
+      "document": "Know Your Customer (KYC) norms-Anti-Money Laundering (AML) standards.pdf",
+      "section": "2.1 Customer",
+      "similarity_score": 0.561
+    }
+  }
+]

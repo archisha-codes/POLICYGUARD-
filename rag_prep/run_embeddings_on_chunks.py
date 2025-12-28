@@ -9,7 +9,8 @@ def load_chunks():
         return json.load(f)
 
 def generate_embeddings(chunks):
-    model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+    model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
+
 
     texts = [chunk["content"] for chunk in chunks]
 

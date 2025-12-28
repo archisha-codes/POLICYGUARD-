@@ -1,25 +1,24 @@
+Completed Tasks (Phase-1)
 
-# Archisha – Phase 1 Contribution (PolicyGuard)
+Regulatory PDF Ingestion
+Automated reading of multiple compliance PDFs from a shared data/ directory.
 
-This folder contains ONLY my assigned Phase-1 responsibilities:
+Heading-Aware Chunking (RAG Preparation)
+Chunked regulatory documents based on legal and policy headings (RBI circulars, KYC/AML guidelines, Acts).
+Preserved document structure and attached metadata (document name, section).
 
-## Scope Covered
-1. RAG Preparation
-   - Regulatory heading-based chunking strategy
-   - Embedding generation testing using Sentence-Transformers
+Semantic Embedding Generation
+Generated normalized sentence embeddings using Sentence-Transformers (MiniLM).
+Produced 384-dimensional vectors for each regulatory chunk.
 
-2. Prompt Engineering
-   - IBM Granite prompt templates enforcing strict structured JSON output
+Proof Artifacts & Validation
+Persisted chunked outputs as structured JSON.
+Validated chunk counts and embedding dimensions across multiple PDFs.
 
-3. UI Implementation
-   - React + TailwindCSS dashboard skeleton
-   - "Real-time Compliance" view layout
+Semantic Similarity Search (Pre-FAISS)
+Demonstrated retrieval of relevant regulatory sections using cosine similarity on embeddings.
 
-## Out of Scope
-- Backend orchestration
-- FAISS indexing
-- Streaming / SSE
-- Evaluation & stress testing
-- Cloud / DevOps
-
-This separation is intentional to clearly represent individual contribution.
+Compliance Dashboard UI (Frontend Foundation)
+Built a responsive dashboard using React + Tailwind CSS.
+Implemented sidebar navigation, KPI cards, compliance status indicators, and risk visualization.
+UI designed to integrate real-time compliance results in later phases.

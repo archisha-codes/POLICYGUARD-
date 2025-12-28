@@ -2,7 +2,6 @@
 """
 Phase-1 RAG Preparation
 Chunking strategy: Regulatory-heading-based chunking
-Owner: Archisha
 """
 
 import re
