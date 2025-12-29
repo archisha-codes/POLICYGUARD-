@@ -116,15 +116,6 @@ docker start policyguard-opensearch
 
 ---
 
-## ▶️ Run Project Pipeline
-
-### 📄 Chunk PDFs (Local / S3)
-
-bash
-python run_chunking_on_data.py
-
-
-
 ### Start OpenSearch
 
 ```bash
