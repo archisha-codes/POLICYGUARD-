@@ -85,6 +85,45 @@ Allows **automated ingestion** of scraped PDFs uploaded by other team members.
 ## 🐳 Docker Usage (Why & Where)
 
 Docker is used to run **OpenSearch locally** without manual installation.
+ Start Docker Engine
+
+Open *Docker Desktop*
+Wait until it shows *“Engine running”*
+
+---
+
+### 2️⃣ Check OpenSearch container
+
+bash
+docker ps
+
+
+If you see:
+
+
+policyguard-opensearch
+
+
+➡️ Continue
+
+---
+
+### 3️⃣ If container exists but stopped
+
+bash
+docker start policyguard-opensearch
+
+
+---
+
+## ▶️ Run Project Pipeline
+
+### 📄 Chunk PDFs (Local / S3)
+
+bash
+python run_chunking_on_data.py
+
+
 
 ### Start OpenSearch
 
