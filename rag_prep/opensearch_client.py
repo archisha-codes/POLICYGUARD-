@@ -4,7 +4,7 @@ from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
 
 def get_opensearch_client():
     # 1. Get Config from Environment Variables
-    host = os.getenv("OPENSEARCH_HOST", "") # Ask Pawan for this URL (remove https://)
+    host = os.getenv("OPENSEARCH_HOST", "") 
     region = os.getenv("AWS_REGION", "ap-south-1")
     service = "aoss" # "aoss" for Serverless, "es" for Provisioned. 
     

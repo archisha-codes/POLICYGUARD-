@@ -2,7 +2,6 @@
 import sys
 import os
 
-# Add rag_prep to python path to import Archisha's modules
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../rag_prep')))
 
 from semantic_search_demo import semantic_search

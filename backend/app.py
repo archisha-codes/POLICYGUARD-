@@ -18,7 +18,7 @@ async def analyze_transaction(txn: TransactionRequest):
     # 1. Deterministic Rule Check (Fast Fail)
     # e.g., if amount > 1M and KYC is missing -> Reject immediately
     
-    # 2. RAG Retrieval (Archisha's part)
+    # 2. RAG Retrieval 
     # Convert txn to a query string, e.g., "International transfer of 50k USD to high risk country"
     query = f"{txn.description} amount {txn.amount}"
     policy_context = retrieve_relevant_rules(query)
