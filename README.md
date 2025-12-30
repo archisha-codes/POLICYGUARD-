@@ -1,5 +1,4 @@
 
-<<<<<<< HEAD
 # POLICYGUARD – Phase-1 (RAG Preparation & Compliance Intelligence)
 
 PolicyGuard is a **Regulatory Compliance Intelligence System** that ingests regulatory PDFs (KYC/AML/RBI), prepares them for **Retrieval-Augmented Generation (RAG)**, and enables **semantic compliance analysis**.
@@ -239,7 +238,6 @@ Dashboard is ready to consume real compliance results in later phases.
 
 This Phase-1 pipeline follows **industry-standard RAG ingestion design** and is fully extensible for enterprise compliance systems.
 
-=======
 Regulatory PDF Ingestion
 Automated ingestion of multiple regulatory and compliance PDFs from a shared data/ directory, enabling scalable rule intake for downstream analysis.
 
@@ -272,4 +270,3 @@ Risk meter and real-time compliance status badge
 Dynamic aggregation of compliance metrics derived from AI outputs
 
 UI fully driven by real semantic search and AI evaluation results (no hard-coded values)
->>>>>>> 9df8a203b745378bcbd55f6700c44ed65098f767
