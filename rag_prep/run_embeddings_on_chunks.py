@@ -2,9 +2,12 @@ import json
 from sentence_transformers import SentenceTransformer
 from opensearch_client import get_opensearch_client
 from opensearch_index import create_index, INDEX_NAME
+import os
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
 CHUNK_FILE = "chunked_output.json"
-
 
 def load_chunks():
     with open(CHUNK_FILE, "r", encoding="utf-8") as f:
