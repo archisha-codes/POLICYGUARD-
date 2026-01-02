@@ -2,6 +2,8 @@
 import os
 from ibm_watsonx_ai.foundation_models import ModelInference
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
+import json
+import re
 
 # Credentials from your prompt
 WATSONX_API_KEY = "kSTCg7uk4kb7qM-OtpQBaI1vHGzLMBzHQxwer6BFPTQG"
@@ -40,5 +42,20 @@ def analyze_with_granite(transaction_data, retrieved_policies):
     Output purely valid JSON with keys: "verdict" (Compliant/Non-Compliant), "risk_score" (0-100), "explanation", "violated_rules".
     """
 
-    response = model.generate_text(prompt=prompt)
-    return response
+    response_text = model.generate_text(prompt=prompt)
+    try:
+        # Try to parse directly
+        return json.loads(response_text)
+    except json.JSONDecodeError:
+        # If failed, look for code blocks
+        match = re.search(r"```json(.*?)```", response_text, re.DOTALL)
+        if match:
+            return json.loads(match.group(1).strip())
+        else:
+            # Fallback if model fails to output JSON
+            return {
+                "verdict": "Manual Review",
+                "risk_score": 50,
+                "explanation": "AI output parsing failed. Raw: " + response_text[:100],
+                "violated_rules": []
+            }
