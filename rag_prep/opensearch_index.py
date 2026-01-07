@@ -1,7 +1,6 @@
 from opensearch_client import get_opensearch_client
 
-INDEX_NAME = "policyguardvectorsearch-v2"
-
+INDEX_NAME = "policyguardvectorsearch"
 
 def create_index():
     client = get_opensearch_client()
