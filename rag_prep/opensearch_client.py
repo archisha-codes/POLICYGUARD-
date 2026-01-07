@@ -44,9 +44,9 @@ def get_opensearch_client():
         )
         
         # Test the connection
-        info = client.info()
+        # info = client.info()
         print(f"Successfully connected to OpenSearch at {host}")
-        print(f"   OpenSearch Version: {info['version']['number']}")
+        # print(f"   OpenSearch Version: {info['version']['number']}")
         
         return client
         

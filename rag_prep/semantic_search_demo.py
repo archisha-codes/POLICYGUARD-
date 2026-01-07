@@ -6,19 +6,19 @@ from opensearch_index import INDEX_NAME
 TOP_K = 5
 # ---------------------------------------
 
-
 def semantic_search(query):
     """
-    Performs semantic search over OpenSearch vector index
+    Performs semantic search using Exact k-NN (Script Score).
+    This works on indices created without the 'method' block.
     """
     model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
     client = get_opensearch_client()
 
-    # ✅ SAFETY CHECK: ensure index exists
+    # Safety check
     if not client.indices.exists(index=INDEX_NAME):
         raise RuntimeError(
             f"OpenSearch index '{INDEX_NAME}' not found. "
-            "Run embedding pipeline first (run_embeddings_on_chunks.py)."
+            "Run embedding pipeline first."
         )
 
     # Generate query embedding
@@ -27,16 +27,23 @@ def semantic_search(query):
         normalize_embeddings=True
     ).tolist()
 
-    # OpenSearch KNN query
+    # ✅ FIXED: Use 'script_score' instead of 'knn' query
+    # This performs an exact scan, which is accurate and works on your current index.
     response = client.search(
         index=INDEX_NAME,
         body={
             "size": TOP_K,
             "query": {
-                "knn": {
-                    "embedding": {
-                        "vector": query_embedding,
-                        "k": TOP_K
+                "script_score": {
+                    "query": {"match_all": {}},
+                    "script": {
+                        "source": "knn_score",
+                        "lang": "knn",
+                        "params": {
+                            "field": "embedding",
+                            "query_value": query_embedding,
+                            "space_type": "l2"
+                        }
                     }
                 }
             }
@@ -47,7 +54,6 @@ def semantic_search(query):
 
     for hit in response["hits"]["hits"]:
         source = hit["_source"]
-
         results.append({
             "score": round(hit["_score"], 3),
             "document": source.get("document"),
