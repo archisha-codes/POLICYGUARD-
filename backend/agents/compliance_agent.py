@@ -21,7 +21,7 @@ def analyze_with_granite(transaction_data, retrieved_policies):
         params=GenerateParams,
         credentials={
             "apikey": WATSONX_API_KEY,
-            "url": "https://eu-de.ml.cloud.ibm.com
+            "url": "https://us-south.ml.cloud.ibm.com
         },
         project_id=PROJECT_ID
     )
