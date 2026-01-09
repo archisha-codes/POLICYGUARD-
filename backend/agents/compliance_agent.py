@@ -7,7 +7,7 @@ import re
 
 # Credentials from your prompt
 WATSONX_API_KEY = "kSTCg7uk4kb7qM-OtpQBaI1vHGzLMBzHQxwer6BFPTQG"
-PROJECT_ID = "633eed58-706c-487e-94c8-382b368feae3"
+PROJECT_ID = "f28df6a1-e14e-42d1-89c0-c343f7b0219e"
 GenerateParams = {
     GenParams.DECODING_METHOD: "greedy",
     GenParams.MAX_NEW_TOKENS: 500,
