@@ -1,61 +1,108 @@
 # backend/agents/compliance_agent.py
+# Amazon Bedrock (Nova) Integration - Replaces IBM Granite
 import os
-from ibm_watsonx_ai.foundation_models import ModelInference
-from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
 import json
+import boto3
 import re
 
-# Credentials from your prompt
-WATSONX_API_KEY = "kSTCg7uk4kb7qM-OtpQBaI1vHGzLMBzHQxwer6BFPTQG"
-PROJECT_ID = "f28df6a1-e14e-42d1-89c0-c343f7b0219e"
-GenerateParams = {
-    GenParams.DECODING_METHOD: "greedy",
-    GenParams.MAX_NEW_TOKENS: 500,
-    GenParams.MIN_NEW_TOKENS: 10,
-    GenParams.TEMPERATURE: 0, # Deterministic for compliance
-}
+# Bedrock Configuration
+BEDROCK_REGION = os.getenv("BEDROCK_REGION", "us-east-1")
+NOVA_MODEL_ID = os.getenv("NOVA_MODEL_ID", "amazon.nova-micro-v1:0")
+
+# Initialize Bedrock Runtime client
+# Uses IAM role from compute environment (EC2, Lambda, ECS, etc.)
+bedrock = boto3.client("bedrock-runtime", region_name=BEDROCK_REGION)
+
+
+def call_nova_for_compliance(transaction_data: str, retrieved_policies: str) -> dict:
+    """
+    Analyzes transaction compliance using Amazon Nova on Bedrock.
+    Replaces the previous IBM Granite integration.
+    
+    Args:
+        transaction_data: Transaction details to analyze
+        retrieved_policies: Relevant regulatory policies from OpenSearch
+    
+    Returns:
+        dict: Compliance verdict with risk score and explanation
+    """
+    system_instructions = """
+You are PolicyGuard, a strict financial compliance AI.
+Analyze transactions against Indian RBI, AML, and PMLA regulations.
+
+Return STRICTLY valid JSON with these keys:
+- verdict: "Compliant" | "Non-Compliant" | "Manual Review"
+- risk_score: integer 0-100
+- explanation: brief reasoning
+- violated_rules: list of violated rule references
+
+Do not include any text outside JSON.
+"""
+
+    user_prompt = f"""
+TRANSACTION:
+{transaction_data}
+
+REGULATORY RULES (CONTEXT):
+{retrieved_policies}
+
+TASK:
+Determine if this transaction violates any rules.
+Output purely valid JSON with keys: "verdict" (Compliant/Non-Compliant), "risk_score" (0-100), "explanation", "violated_rules".
+"""
+
+    body = {
+        "inputText": user_prompt,
+        "textGenerationConfig": {
+            "temperature": 0.0,  # Deterministic for compliance
+            "topP": 0.9,
+            "maxTokenCount": 512,
+        },
+        "system": system_instructions,
+    }
+
+    try:
+        response = bedrock.invoke_model(
+            modelId=NOVA_MODEL_ID,
+            body=json.dumps(body),
+            contentType="application/json",
+            accept="application/json",
+        )
+
+        payload = json.loads(response["body"].read())
+        response_text = payload.get("outputText") or payload.get("results", [{}])[0].get("outputText", "")
+        response_text = response_text.strip()
+
+        # Try to parse JSON directly
+        try:
+            return json.loads(response_text)
+        except json.JSONDecodeError:
+            # If failed, look for JSON in code blocks
+            match = re.search(r"```json(.*?)```", response_text, re.DOTALL)
+            if match:
+                return json.loads(match.group(1).strip())
+            else:
+                # Fallback if model fails to output JSON
+                return {
+                    "verdict": "Manual Review",
+                    "risk_score": 50,
+                    "explanation": "AI output parsing failed. Raw: " + response_text[:100],
+                    "violated_rules": [],
+                }
+
+    except Exception as e:
+        # Handle Bedrock API errors
+        return {
+            "verdict": "Manual Review",
+            "risk_score": 50,
+            "explanation": f"Bedrock API error: {str(e)}",
+            "violated_rules": [],
+        }
+
 
 def analyze_with_granite(transaction_data, retrieved_policies):
-    model = ModelInference(
-        model_id="ibm/granite-13b-instruct-v2",
-        params=GenerateParams,
-        credentials={
-            "apikey": WATSONX_API_KEY,
-            "url": "https://us-south.ml.cloud.ibm.com
-        },
-        project_id=PROJECT_ID
-    )
-
-    # Prompt Engineering (Strict JSON Output)
-    prompt = f"""
-    You are PolicyGuard, a strict financial compliance AI.
-    Analyze the transaction against the provided regulatory rules.
-    
-    TRANSACTION:
-    {transaction_data}
-
-    REGULATORY RULES (CONTEXT):
-    {retrieved_policies}
-
-    TASK:
-    Determine if this transaction violates any rules.
-    Output purely valid JSON with keys: "verdict" (Compliant/Non-Compliant), "risk_score" (0-100), "explanation", "violated_rules".
     """
-
-    response_text = model.generate_text(prompt=prompt)
-    try:
-        # Try to parse directly
-        return json.loads(response_text)
-    except json.JSONDecodeError:
-        # If failed, look for code blocks
-        match = re.search(r"```json(.*?)```", response_text, re.DOTALL)
-        if match:
-            return json.loads(match.group(1).strip())
-        else:
-            # Fallback if model fails to output JSON
-            return {
-                "verdict": "Manual Review",
-                "risk_score": 50,
-                "explanation": "AI output parsing failed. Raw: " + response_text[:100],
-                "violated_rules": []
-            }
+    Deprecated: Use call_nova_for_compliance instead.
+    Kept for backward compatibility during migration phase.
+    """
+    return call_nova_for_compliance(transaction_data, retrieved_policies)
