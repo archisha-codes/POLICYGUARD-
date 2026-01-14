@@ -1,5 +1,23 @@
 # POLICYGUARD Phase 4: Production Deployment & Advanced Compliance
 
+> **AWS-First Implementation**: This Phase 4 guide is exclusively designed for AWS cloud infrastructure, replacing all IBM and non-AWS tools.
+> Complete migration from IBM Granite to Amazon Nova (AWS Bedrock) has been implemented.
+
+### AWS Tool Migration (IBM → AWS)
+
+| Component | IBM Tool | AWS Replacement | Status |
+|-----------|----------|-----------------|--------|
+| LLM Engine | IBM Granite | Amazon Nova (Bedrock) | ✅ Migrated |
+| Vector Store | Custom Solution | OpenSearch | ✅ Deployed |
+| Database | Custom | Aurora RDS | ✅ Deployed |
+| Streaming | Custom | AWS Kinesis / Kafka | ✅ Ready |
+| Monitoring | Custom Logs | CloudWatch + X-Ray | ✅ Configured |
+| Orchestration | Custom | AWS Lambda + ECS | ✅ Ready |
+| Caching | N/A | Redis / DynamoDB | ✅ Ready |
+| API Gateway | N/A | AWS API Gateway | ✅ Ready |
+
+
+
 ## 1. EXECUTIVE SUMMARY
 
 Phase 4 focuses on enterprise-grade deployment and advanced compliance orchestration:
