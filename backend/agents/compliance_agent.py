@@ -1,5 +1,5 @@
 # backend/agents/compliance_agent.py
-# Amazon Bedrock (dpk) Integration - Replaces IBM Granite
+# Amazon Bedrock (Nova) Integration - Replaces IBM Granite
 import os
 import json
 import boto3
@@ -7,16 +7,16 @@ import re
 
 # Bedrock Configuration
 BEDROCK_REGION = os.getenv("BEDROCK_REGION", "us-east-1")
-DPK_MODEL_ID = os.getenv("DPK_MODEL_ID", "amazon.dpk-micro-v1:0")
+NOVA_MODEL_ID = os.getenv("NOVA_MODEL_ID", "amazon.Nova-micro-v1:0")
 
 # Initialize Bedrock Runtime client
 # Uses IAM role from compute environment (EC2, Lambda, ECS, etc.)
 bedrock = boto3.client("bedrock-runtime", region_name=BEDROCK_REGION)
 
 
-def call_dpk_for_compliance(transaction_data: str, retrieved_policies: str) -> dict:
+def call_nova_for_compliance(transaction_data: str, retrieved_policies: str) -> dict:
     """
-    Analyzes transaction compliance using Amazon dpk on Bedrock.
+    Analyzes transaction compliance using Amazon Nova on Bedrock.
     Replaces the previous IBM Granite integration.
     
     Args:
@@ -63,7 +63,7 @@ Output purely valid JSON with keys: "verdict" (Compliant/Non-Compliant), "risk_s
 
     try:
         response = bedrock.invoke_model(
-            modelId=DPK_MODEL_ID,
+            modelId=NOVA_MODEL_ID,
             body=json.dumps(body),
             contentType="application/json",
             accept="application/json",
@@ -102,7 +102,7 @@ Output purely valid JSON with keys: "verdict" (Compliant/Non-Compliant), "risk_s
 
 def analyze_with_granite(transaction_data, retrieved_policies):
     """
-    Deprecated: Use call_dpk_for_compliance instead.
+    Deprecated: Use call_nova_for_compliance instead.
     Kept for backward compatibility during migration phase.
     """
-    return call_dpk_for_compliance(transaction_data, retrieved_policies)
+    return call_nova_for_compliance(transaction_data, retrieved_policies)
