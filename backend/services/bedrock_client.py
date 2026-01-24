@@ -1,5 +1,5 @@
 # backend/services/bedrock_client.py
-# Centralized Bedrock (Amazon dpk) LLM client for POLICYGUARD
+# Centralized Bedrock (Amazon Nova) LLM client for POLICYGUARD
 
 import os
 import json
@@ -9,9 +9,9 @@ from typing import Dict, List, Any
 from datetime import datetime
 
 
-class BedrockDpkClient:
+class BedrockNovaClient:
     """
-    Bedrock Runtime client wrapper for Amazon dpk models.
+    Bedrock Runtime client wrapper for Amazon Nova models.
     Handles model invocation, error handling, and response parsing.
     """
 
@@ -22,15 +22,15 @@ class BedrockDpkClient:
         temperature: float = 0.0,
     ):
         """
-        Initialize Bedrock dpk client with configuration from environment.
+        Initialize Bedrock Nova client with configuration from environment.
         
         Args:
-            model_id: dpk model ID (e.g., amazon.dpk-micro-v1:0)
+            model_id: Nova model ID (e.g., amazon.Nova-micro-v1:0)
             region_name: AWS region for Bedrock (e.g., us-east-1)
             temperature: Sampling temperature (0.0-1.0, 0 for deterministic)
         """
         self.model_id = model_id or os.getenv(
-            "DPK_MODEL_ID", "amazon.dpk-micro-v1:0"
+            "NOVA_MODEL_ID", "amazon.Nova-micro-v1:0"
         )
         self.region_name = region_name or os.getenv(
             "BEDROCK_REGION", "us-east-1"
@@ -48,7 +48,7 @@ class BedrockDpkClient:
         top_p: float = 0.9,
     ) -> Dict[str, Any]:
         """
-        Invoke Amazon dpk model with given prompt.
+        Invoke Amazon Nova model with given prompt.
         
         Args:
             prompt: User prompt
@@ -140,11 +140,11 @@ class BedrockDpkClient:
 _bedrock_client = None
 
 
-def get_bedrock_client() -> BedrockDpkClient:
-    """Get or create global Bedrock dpk client instance."""
+def get_bedrock_client() -> BedrockNovaClient:
+    """Get or create global Bedrock Nova client instance."""
     global _bedrock_client
     if _bedrock_client is None:
-        _bedrock_client = BedrockDpkClient()
+        _bedrock_client = BedrockNovaClient()
     return _bedrock_client
 
 
@@ -152,7 +152,7 @@ def health_check() -> Dict[str, Any]:
     """Test Bedrock connectivity with a simple prompt."""
     client = get_bedrock_client()
     result = client.invoke(
-        prompt='Return JSON: {"status": "ok", "model": "dpk"}',
+        prompt='Return JSON: {"status": "ok", "model": "Nova"}',
         max_tokens=64,
     )
     return result
