@@ -1,0 +1,72 @@
+# FastAPI & Web Framework
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+python-multipart
+
+# AWS Services
+boto3
+botocore
+
+# Database
+sqlalchemy
+alembic
+psycopg2-binary
+aiofiles
+
+# Vector Store & Search
+opensearch-py
+opensearch_client
+scikit-learn
+scipy
+numpy
+
+# LLM & NLP
+transformers
+torch
+sentence-transformers
+pdf2image
+pypdf
+pdfplumber
+
+# Stream Processing
+python-json-logger
+loguru
+
+# Async & Concurrency
+aiohttp
+asyncio-contextmanager
+
+# Security & Auth
+python-jose[cryptography]
+pyJWT
+passlib[bcrypt]
+bcrypt
+cryptography
+
+# Utilities
+python-dotenv
+requests
+httpx
+pyyaml
+click
+
+# Testing
+pytest
+pytest-asyncio
+pytest-cov
+locust
+
+# Monitoring & Logging
+watchtower
+prometheus-client
+
+# Development
+black
+isort
+flake8
+mypy
+python-dotenv
+feedparser
+google-generativeai
