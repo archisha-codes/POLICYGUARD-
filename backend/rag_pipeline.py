@@ -124,22 +124,32 @@ class RAGPipeline:
     Does not require a paid vector DB or AWS OpenSearch.
     """
     def __init__(self):
-        self.model = None
+        self._model = None
+        self._model_loaded = False
         self.opensearch_client = None
         self.local_store = LocalVectorStore()
-
-        # Try initializing SentenceTransformer model if available
-        try:
-            from sentence_transformers import SentenceTransformer
-            logger.info(f"🧠 Loading Local Embedding Model '{EMBEDDING_MODEL}'...")
-            self.model = SentenceTransformer(EMBEDDING_MODEL)
-            logger.info("✅ Embedding Model Loaded Successfully")
-        except Exception as e:
-            logger.warning(f"SentenceTransformer not available ({e}). Using keyword-based local search.")
 
         # Try initializing OpenSearch if explicitly configured
         if OPENSEARCH_URL or OPENSEARCH_HOST:
             self._init_opensearch()
+
+    @property
+    def model(self):
+        if not self._model_loaded:
+            self._model_loaded = True
+            try:
+                if os.getenv("ENABLE_HEAVY_EMBEDDINGS", "false").lower() in ("true", "1"):
+                    from sentence_transformers import SentenceTransformer
+                    logger.info(f"🧠 Loading Local Embedding Model '{EMBEDDING_MODEL}'...")
+                    self._model = SentenceTransformer(EMBEDDING_MODEL)
+                    logger.info("✅ Embedding Model Loaded Successfully")
+                else:
+                    logger.info("⚡ Fast Mode: Using high-speed statutory rule retrieval for instant cloud startup.")
+                    self._model = None
+            except Exception as e:
+                logger.warning(f"SentenceTransformer not available ({e}). Using keyword-based local search.")
+                self._model = None
+        return self._model
 
     def _init_opensearch(self):
         try:

@@ -315,6 +315,7 @@ def startup():
     init_db()
     logger.info("PolicyGuard System: ONLINE")
 
+@app.get("/")
 @app.get("/health")
 @app.get("/api/health")
 def health_check():
