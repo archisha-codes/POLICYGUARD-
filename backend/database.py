@@ -24,7 +24,7 @@ USE_SQLITE = os.getenv("USE_SQLITE", "True").lower() == "true"
 
 # Determine Connection String
 if RAW_DATABASE_URL:
-    # Standard DATABASE_URL (Render, Supabase, Neon)
+    # Standard DATABASE_URL (Render Postgres, Supabase, Neon)
     DATABASE_URL = RAW_DATABASE_URL.replace("postgres://", "postgresql://", 1) if RAW_DATABASE_URL.startswith("postgres://") else RAW_DATABASE_URL
     logger.info(f"Using DATABASE_URL environment variable for connection.")
     engine = create_engine(
@@ -35,8 +35,16 @@ if RAW_DATABASE_URL:
         pool_timeout=30,
         pool_recycle=3600
     )
-elif DB_ENVIRONMENT == "production":
-    # Production: Use AWS RDS / Postgres params
+elif USE_SQLITE or not os.getenv("DB_HOST"):
+    # Development / Standalone Cloud Demo: Use Local SQLite
+    DATABASE_URL = "sqlite:///./policyguard.db"
+    logger.info(f"Using Local SQLite Database: {DATABASE_URL}")
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={"check_same_thread": False} # Required for SQLite with FastAPI
+    )
+elif DB_ENVIRONMENT == "production" and os.getenv("DB_HOST"):
+    # Production with external PostgreSQL instance (AWS RDS / External Postgres)
     DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     engine = create_engine(
         DATABASE_URL,
@@ -46,18 +54,14 @@ elif DB_ENVIRONMENT == "production":
         pool_timeout=30,
         pool_recycle=3600
     )
-elif USE_SQLITE:
-    # Development / Local Demo: Use Local SQLite (No installation required)
+else:
+    # Local SQLite Fallback
     DATABASE_URL = "sqlite:///./policyguard.db"
     logger.info(f"Using Local SQLite Database: {DATABASE_URL}")
     engine = create_engine(
         DATABASE_URL,
-        connect_args={"check_same_thread": False} # Required for SQLite with FastAPI
+        connect_args={"check_same_thread": False}
     )
-else:
-    # Explicit Local PostgreSQL
-    DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-    engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
