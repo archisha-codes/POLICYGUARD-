@@ -1,18 +1,29 @@
 # backend/services/hallucination_guard.py
+import os
 import logging
-from sentence_transformers import SentenceTransformer, util
 
 logger = logging.getLogger(__name__)
 
 class HallucinationGuard:
     def __init__(self):
-        try:
-            # Lightweight model for semantic similarity
-            self.model = SentenceTransformer('all-MiniLM-L6-v2')
-            logger.info("🛡️ Hallucination Guard Initialized")
-        except Exception as e:
-            logger.error(f"Failed to load Hallucination Guard model: {e}")
-            self.model = None
+        self._model = None
+        self._model_loaded = False
+
+    @property
+    def model(self):
+        if not self._model_loaded:
+            self._model_loaded = True
+            try:
+                if os.getenv("ENABLE_HEAVY_EMBEDDINGS", "false").lower() in ("true", "1"):
+                    from sentence_transformers import SentenceTransformer
+                    self._model = SentenceTransformer('all-MiniLM-L6-v2')
+                    logger.info("🛡️ Hallucination Guard Initialized")
+                else:
+                    self._model = None
+            except Exception as e:
+                logger.error(f"Failed to load Hallucination Guard model: {e}")
+                self._model = None
+        return self._model
 
     def validate_response(self, query: str, response: str, citations: list, risk_score: int = 0) -> dict:
         """
@@ -33,6 +44,7 @@ class HallucinationGuard:
         context_text = " ".join([c['text'] for c in citations])
         
         # 3. Semantic Similarity Check
+        from sentence_transformers import util
         embeddings = self.model.encode([response, context_text])
         similarity = util.cos_sim(embeddings[0], embeddings[1]).item()
         

@@ -23,10 +23,7 @@ scikit-learn
 scipy
 numpy
 
-# LLM & NLP
-transformers
-torch
-sentence-transformers
+# PDF & Document Processing
 pdf2image
 pypdf
 pdfplumber
@@ -46,28 +43,11 @@ passlib[bcrypt]
 bcrypt
 cryptography
 
-# Utilities
+# Utilities & AI Client
 python-dotenv
 requests
 httpx
 pyyaml
 click
-
-# Testing
-pytest
-pytest-asyncio
-pytest-cov
-locust
-
-# Monitoring & Logging
-watchtower
-prometheus-client
-
-# Development
-black
-isort
-flake8
-mypy
-python-dotenv
 feedparser
 google-generativeai
