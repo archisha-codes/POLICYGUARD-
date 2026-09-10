@@ -1,0 +1,9 @@
+*.db
+data
+node_modules
+dist
+.env
+.DS_Store
+__pycache__
+venv
+policyguard.db
