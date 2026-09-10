@@ -1,6 +1,7 @@
 # FastAPI & Web Framework
 fastapi
 uvicorn
+gunicorn
 pydantic
 pydantic-settings
 python-multipart
