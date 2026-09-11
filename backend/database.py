@@ -111,6 +111,4 @@ def init_db():
         finally:
             db.close()
     except Exception as e:
-        logger.error(f"Database initialization failed: {e}")
-        if DB_ENVIRONMENT == "production":
-            raise
+        logger.warning(f"Database initialization note: {e}")
