@@ -312,8 +312,12 @@ def process_transaction_core(
 
 @app.on_event("startup")
 def startup():
-    init_db()
-    logger.info("PolicyGuard System: ONLINE")
+    try:
+        init_db()
+        logger.info("PolicyGuard System: ONLINE")
+    except Exception as e:
+        logger.error(f"Database initialization error on startup: {e}")
+        logger.info("PolicyGuard System: ONLINE (Degraded/Offline DB mode)")
 
 @app.get("/")
 @app.get("/health")

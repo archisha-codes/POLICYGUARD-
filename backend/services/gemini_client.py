@@ -2,7 +2,12 @@ import os
 import json
 import logging
 import re
+import warnings
+
+# Suppress SDK deprecation warning before module import
+warnings.filterwarnings("ignore", category=FutureWarning)
 import google.generativeai as genai
+
 from typing import Dict, Any
 from datetime import datetime
 
@@ -13,10 +18,6 @@ class GeminiClient:
         api_key = os.getenv("GOOGLE_API_KEY")
         if not api_key:
             logger.warning("GOOGLE_API_KEY is not set in environment variables.")
-        else:
-            # Suppress the deprecation warning clutter in logs if using the old SDK
-            import warnings
-            warnings.filterwarnings("ignore", category=FutureWarning, module="google.generativeai")
             
         genai.configure(api_key=api_key)
         self.model_id = model_id
